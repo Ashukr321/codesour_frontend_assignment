@@ -64,7 +64,7 @@ const Product = () => {
       id: 4,
       name: "Tomatoes",
       price: 2.49,
-      image: "https://images.unsplash.com/photo-1546470427-1ec0a5a6c2c8?w=300&h=300&fit=crop",
+      image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300&h=300&fit=crop",
       category: "nightshades",
       description: "Ripe red tomatoes"
     },
@@ -72,7 +72,7 @@ const Product = () => {
       id: 5,
       name: "Red Onions",
       price: 1.29,
-      image: "https://images.unsplash.com/photo-1618512496248-a01f6a18a5af?w=300&h=300&fit=crop",
+      image: "https://images.unsplash.com/photo-1508747703725-719777637510?w=300&h=300&fit=crop",
       category: "allium",
       description: "Fresh red onions"
     },
@@ -80,7 +80,7 @@ const Product = () => {
       id: 6,
       name: "Zucchini",
       price: 1.99,
-      image: "https://images.unsplash.com/photo-1596185600711-5c3f2b66159e?w=300&h=300&fit=crop",
+      image: "https://images.unsplash.com/photo-1583687355032-89b902b7335f?w=300&h=300&fit=crop",
       category: "gourds",
       description: "Fresh green zucchini"
     }

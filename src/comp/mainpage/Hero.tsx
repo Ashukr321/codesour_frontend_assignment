@@ -13,7 +13,7 @@ const Hero = () => {
       desc: "100% organic and locally sourced vegetables"
     },
     {
-      url: "https://images.unsplash.com/photo-1618591258686-ae331fede2f5?q=80&w=1200",
+      url: "https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?q=80&w=1200",
       title: "Seasonal Selection",
       desc: "Best seasonal vegetables at great prices"
     },
