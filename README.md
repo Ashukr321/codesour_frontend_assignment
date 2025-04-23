@@ -136,25 +136,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [TailwindCSS](https://tailwindcss.com/) for styling
 - [Framer Motion](https://www.framer.com/motion/) for animations
 
-## 🌐 Live Demo & Deployment
+## 🌐 Live Demo
 
 - **Live Demo**: [GreenBasket E-commerce](https://codesour-frontend-assignment.vercel.app/)
-- **Status**: [![Vercel Status](https://img.shields.io/badge/Vercel-Deployed-success)](https://codesour-frontend-assignment.vercel.app/)
-
-### Deployment Features
-- Continuous Deployment with Vercel
-- Automatic HTTPS/SSL
-- Edge Network CDN
-- Instant Updates
-- Zero-Config Setup
-
-To deploy your own instance:
-
-1. Fork this repository
-2. Sign up on [Vercel](https://vercel.com)
-3. Import your forked repository
-4. Vercel will automatically detect Vite configuration
-5. Deploy! 🚀
 
 ## 📞 Contact & Support
 

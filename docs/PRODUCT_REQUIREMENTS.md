@@ -110,6 +110,14 @@ Ramesh, a local vegetable shop owner, aims to digitize his business through an e
 
 ## 🎨 Additional Features
 
+### For Customers 👥
+- [ ] Wishlist functionality
+- [ ] Order history view
+- [ ] Product reviews and ratings
+- [ ] Share products on social media
+- [ ] Save delivery addresses
+- [ ] Quick reorder functionality
+
 ### Performance Optimization
 - [ ] Lazy loading implementation
 - [ ] Code splitting
