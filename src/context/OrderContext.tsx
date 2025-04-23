@@ -16,6 +16,7 @@ interface OrderContextType {
   cancelOrder: (orderId: number) => void
   getOrderById: (orderId: number) => OrderItem | undefined
   getAllOrders: () => OrderItem[]
+  clearOrders: () => void  // Add this line
 }
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined)
@@ -46,13 +47,18 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 
   const getAllOrders = () => orders
 
+  const clearOrders = () => {
+    setOrders([])
+  }
+
   return (
     <OrderContext.Provider value={{
       orders,
       addOrder,
       cancelOrder,
       getOrderById,
-      getAllOrders
+      getAllOrders,
+      clearOrders  // Add this line
     }}>
       {children}
     </OrderContext.Provider>

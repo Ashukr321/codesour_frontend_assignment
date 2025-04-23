@@ -1,6 +1,7 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { useCart } from '@/context/CartContext'
+import { useOrder } from '@/context/OrderContext'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useNavigate } from 'react-router-dom'
@@ -12,13 +13,52 @@ import { CreditCard, ShoppingBag, CheckCircle } from 'lucide-react'
 
 const PaymentCheckout = () => {
   const { getCartTotal, clearCart, cartItems } = useCart()
+  const { addOrder } = useOrder()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  const [name, setName] = useState('')
+  const [address, setAddress] = useState('')
+  const [city, setCity] = useState('')
+  const [postalCode, setPostalCode] = useState('')
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null)
+
+  // Get user's location
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          })
+          // Set a default address based on location
+          setAddress(`${position.coords.latitude.toFixed(2)}, ${position.coords.longitude.toFixed(2)}`)
+        },
+        (error) => {
+          console.error("Error getting location:", error)
+          toast.error("Couldn't get your location")
+        }
+      )
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     
+    // Create order from cart items with name included
+    const deliveryAddress = `${name} - ${address}, ${city}, ${postalCode}`
+    
+    // Add each cart item as a separate order
+    cartItems.forEach(item => {
+      addOrder({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        deliveryAddress
+      })
+    })
+
     // Simulate payment processing
     setTimeout(() => {
       const items = cartItems.map(item => `${item.quantity}x ${item.name}`).join(', ')
@@ -32,7 +72,7 @@ const PaymentCheckout = () => {
           </div>
         </div>
       )
-      navigate('/')
+      navigate('/orders')
     }, 2000)
   }
 
@@ -153,19 +193,56 @@ const PaymentCheckout = () => {
                   transition={{ delay: 0.5 }}
                   className="space-y-4"
                 >
-                  <h3 className="font-semibold">Billing Address</h3>
+                  <h3 className="font-semibold">Delivery Information</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="col-span-2">
-                      <Label htmlFor="address">Street Address</Label>
-                      <Input id="address" placeholder="123 Main St" required className="mt-1" />
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input 
+                        id="name" 
+                        placeholder="John Doe" 
+                        required 
+                        className="mt-1"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <Label htmlFor="address">Delivery Address</Label>
+                      <Input 
+                        id="address" 
+                        placeholder="123 Main St" 
+                        required 
+                        className="mt-1"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                      />
+                      {userLocation && (
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Current location: {userLocation.lat.toFixed(2)}, {userLocation.lng.toFixed(2)}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <Label htmlFor="city">City</Label>
-                      <Input id="city" placeholder="City" required className="mt-1" />
+                      <Input 
+                        id="city" 
+                        placeholder="City" 
+                        required 
+                        className="mt-1"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                      />
                     </div>
                     <div>
                       <Label htmlFor="postalCode">Postal Code</Label>
-                      <Input id="postalCode" placeholder="12345" required className="mt-1" />
+                      <Input 
+                        id="postalCode" 
+                        placeholder="12345" 
+                        required 
+                        className="mt-1"
+                        value={postalCode}
+                        onChange={(e) => setPostalCode(e.target.value)}
+                      />
                     </div>
                   </div>
                 </motion.div>

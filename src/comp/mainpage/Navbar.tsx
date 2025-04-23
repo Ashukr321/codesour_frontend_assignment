@@ -1,8 +1,21 @@
 import { useState, useEffect } from 'react'
-import { Menu, LogOut } from "lucide-react"
+import { 
+  Menu, 
+  LogOut,
+  LogIn,
+  UserPlus,
+  Home, 
+  Info, 
+  ShoppingBasket, 
+  Package, 
+  ShoppingCart 
+} from "lucide-react"
+import {  motion } from "framer-motion"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useCart } from '@/context/CartContext'  // Add this import at the top
 
 const Navbar = () => {
   const navigate = useNavigate()
@@ -32,31 +45,49 @@ const Navbar = () => {
     navigate('/register')
   }
 
+  // Update the useEffect to watch for token changes
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    setIsLoggedIn(!!token)
+    const checkAuth = () => {
+      const token = localStorage.getItem('token')
+      setIsLoggedIn(!!token)
+    }
+
+    checkAuth()
+    // Add event listener for storage changes
+    window.addEventListener('storage', checkAuth)
+    return () => window.removeEventListener('storage', checkAuth)
   }, [])
 
   const handleLogout = () => {
     localStorage.removeItem('token')
     setIsLoggedIn(false)
+    navigate('/')
+    toast.success('Logged out successfully')
   }
 
+  const { cartItems } = useCart()  // Add this hook
+  
+  // Calculate total items in cart
+  const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0)
+
   const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '#about' },
-    { name: 'Products', href: '/products' },
-    { name: 'Order', href: '/order' },
-    { name: 'Cart', href: '/cart' },
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'About', href: '#about', icon: Info },
+    { name: 'Products', href: '/products', icon: ShoppingBasket },
+    { name: 'Order', href: '/order', icon: Package },
+    { name: 'Cart', href: '/cart', icon: ShoppingCart, badge: cartItemCount },
   ]
+
+
 
   return (
     <nav className="fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center justify-between container mx-auto px-4 md:px-8">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <Link to="/" className="flex items-center gap-2 text-xl font-bold">
-            <span>Green<span className="text-primary font-extrabold">Basket</span></span>
+          <Link to="/" className="flex items-center gap-2">
+            <ShoppingBasket className="h-6 w-6 text-green-600" />
+            <span className="text-xl font-bold">Green<span className="text-green-600">Basket</span></span>
           </Link>
         </div>
 
@@ -68,8 +99,16 @@ const Navbar = () => {
                 key={item.name}
                 href={item.href}
                 onClick={(e) => handleHashLink(e, item.href)}
-                className="text-sm font-medium transition-colors hover:text-primary relative group"
+                className="text-sm font-medium transition-colors hover:text-primary relative group flex items-center gap-2"
               >
+                <div className="relative">
+                  <item.icon className="h-4 w-4" />
+                  {item.badge !== undefined && item.badge > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                      {item.badge}
+                    </span>
+                  )}
+                </div>
                 {item.name}
                 <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
               </a>
@@ -77,8 +116,16 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className="text-sm font-medium transition-colors hover:text-primary relative group"
+                className="text-sm font-medium transition-colors hover:text-primary relative group flex items-center gap-2"
               >
+                <div className="relative">
+                  <item.icon className="h-4 w-4" />
+                  {item.badge !== undefined && item.badge > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                      {item.badge}
+                    </span>
+                  )}
+                </div>
                 {item.name}
                 <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
               </Link>
@@ -89,23 +136,44 @@ const Navbar = () => {
         {/* Auth Buttons */}
         <div className="hidden md:flex items-center gap-4">
           {isLoggedIn ? (
-            <Button 
-              variant="destructive" 
-              onClick={handleLogout}
-              className="gap-2"
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              key="logout"
             >
-              <LogOut className="h-4 w-4" />
-              Logout
-            </Button>
+              <Button 
+                variant="destructive" 
+                onClick={handleLogout}
+                className="gap-2 px-6"
+              >
+                <LogOut className="h-4 w-4" />
+                Logout
+              </Button>
+            </motion.div>
           ) : (
-            <>
-              <Button variant="outline" asChild>
-                <a href="/login" onClick={handleLogin}>Login</a>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="flex gap-4"
+              key="login-register"
+            >
+              <Button variant="outline" asChild className="px-6">
+                <Link to="/login" className="flex items-center gap-2">
+                  <LogIn className="h-4 w-4" />
+                  Login
+                </Link>
               </Button>
-              <Button variant="default" asChild>
-                <a href="/register" onClick={handleRegister}>Register</a>
+              <Button variant="default" asChild className="bg-green-600 hover:bg-green-700 px-6">
+                <Link to="/register" className="flex items-center gap-2">
+                  <UserPlus className="h-4 w-4" />
+                  Register
+                </Link>
               </Button>
-            </>
+            </motion.div>
           )}
         </div>
 
@@ -124,39 +192,76 @@ const Navbar = () => {
                     key={item.name}
                     href={item.href}
                     onClick={(e) => handleHashLink(e, item.href)}
-                    className="text-lg font-medium transition-colors hover:text-primary"
+                    className="text-lg font-medium transition-colors hover:text-primary flex items-center gap-2"
                   >
+                    <div className="relative">
+                      <item.icon className="h-5 w-5" />
+                      {item.badge !== undefined && item.badge > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
                     {item.name}
                   </a>
                 ) : (
                   <Link
                     key={item.name}
                     to={item.href}
-                    className="text-lg font-medium transition-colors hover:text-primary"
+                    className="text-lg font-medium transition-colors hover:text-primary flex items-center gap-2"
                   >
+                    <div className="relative">
+                      <item.icon className="h-5 w-5" />
+                      {item.badge !== undefined && item.badge > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
                     {item.name}
                   </Link>
                 )
               ))}
               <div className="flex flex-col w-full gap-2 mt-4">
                 {isLoggedIn ? (
-                  <Button 
-                    variant="destructive" 
-                    onClick={handleLogout}
-                    className="gap-2 w-full"
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    key="mobile-logout"
                   >
-                    <LogOut className="h-4 w-4" />
-                    Logout
-                  </Button>
+                    <Button 
+                      variant="destructive" 
+                      onClick={handleLogout}
+                      className="gap-2 w-full"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Logout
+                    </Button>
+                  </motion.div>
                 ) : (
-                  <>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex flex-col gap-2"
+                    key="mobile-login-register"
+                  >
                     <Button variant="outline" className="w-full" asChild>
-                      <a href="/login" onClick={handleLogin}>Login</a>
+                      <Link to="/login" className="flex items-center justify-center gap-2">
+                        <LogIn className="h-4 w-4" />
+                        Login
+                      </Link>
                     </Button>
-                    <Button variant="default" className="w-full" asChild>
-                      <a href="/register" onClick={handleRegister}>Register</a>
+                    <Button variant="default" className="w-full bg-green-600 hover:bg-green-700" asChild>
+                      <Link to="/register" className="flex items-center justify-center gap-2">
+                        <UserPlus className="h-4 w-4" />
+                        Register
+                      </Link>
                     </Button>
-                  </>
+                  </motion.div>
                 )}
               </div>
             </div>

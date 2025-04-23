@@ -13,6 +13,8 @@ import PaymentCheckout from './pages/PaymentCheckout'
 import Order from './pages/Order'
 import { Toaster } from 'sonner'
 import { OrderProvider } from './context/OrderContext'
+import Login from './comp/Login'
+import Register from './comp/Register'
 function App() {
   return (
     <CartProvider>
@@ -27,7 +29,9 @@ function App() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/order" element={<Order />} />
               <Route path="/payment-checkout" element={<PaymentCheckout/>} />
-
+              <Route path="/login" element={<Login/>} />
+              <Route path="/register" element={<Register/>} />
+              
             </Routes>
           </main>
           <Footer />

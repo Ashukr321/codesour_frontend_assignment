@@ -23,7 +23,7 @@ const Footer = () => {
 
       <div className="container mx-auto px-4 py-12 md:py-16">
         {/* Top Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {/* Brand Section */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
@@ -47,28 +47,6 @@ const Footer = () => {
                 <Linkedin className="h-5 w-5" />
               </a>
             </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <a href="#hero" className="text-muted-foreground hover:text-green-600 transition-colors">Home</a>
-              </li>
-              <li>
-                <a href="#about" className="text-muted-foreground hover:text-green-600 transition-colors">About Us</a>
-              </li>
-              <li>
-                <a href="#products" className="text-muted-foreground hover:text-green-600 transition-colors">Our Products</a>
-              </li>
-              <li>
-                <a href="#order" className="text-muted-foreground hover:text-green-600 transition-colors">Order Now</a>
-              </li>
-              <li>
-                <a href="/blog" className="text-muted-foreground hover:text-green-600 transition-colors">Fresh Blog</a>
-              </li>
-            </ul>
           </div>
 
           {/* Contact Info */}
