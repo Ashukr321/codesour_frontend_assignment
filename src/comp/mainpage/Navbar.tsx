@@ -15,7 +15,8 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { useCart } from '@/context/CartContext'  // Add this import at the top
+import { useCart } from '@/context/CartContext'
+import { handleLogout } from '@/utils/auth'  // Import handleLogout
 
 const Navbar = () => {
   const navigate = useNavigate()
@@ -58,13 +59,11 @@ const Navbar = () => {
     }
   }, [])
 
-  const handleLogout = () => {
-    localStorage.removeItem('token')
+  const onLogout = () => {
+    handleLogout() // Call the handleLogout utility function
     setIsLoggedIn(false)
     navigate('/')
     toast.success('Logged out successfully')
-    // Force a check of auth status
-    window.dispatchEvent(new Event('storage'))
   }
 
   const { cartItems } = useCart()  // Add this hook
@@ -147,7 +146,7 @@ const Navbar = () => {
             >
               <Button 
                 variant="destructive" 
-                onClick={handleLogout}
+                onClick={onLogout}
                 className="gap-2 px-6"
               >
                 <LogOut className="h-4 w-4" />
@@ -239,7 +238,7 @@ const Navbar = () => {
                   >
                     <Button 
                       variant="destructive" 
-                      onClick={handleLogout}
+                      onClick={onLogout}
                       className="w-full flex items-center justify-center gap-2 py-6"
                     >
                       <LogOut className="h-5 w-5" />
