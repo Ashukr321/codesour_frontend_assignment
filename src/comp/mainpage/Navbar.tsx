@@ -44,9 +44,18 @@ const Navbar = () => {
     }
 
     checkAuth()
-    // Add event listener for storage changes
+    // Check auth status on focus
+    window.addEventListener('focus', checkAuth)
+    // Check auth on storage change
     window.addEventListener('storage', checkAuth)
-    return () => window.removeEventListener('storage', checkAuth)
+    // Check auth on document visibility change
+    document.addEventListener('visibilitychange', checkAuth)
+
+    return () => {
+      window.removeEventListener('focus', checkAuth)
+      window.removeEventListener('storage', checkAuth)
+      document.removeEventListener('visibilitychange', checkAuth)
+    }
   }, [])
 
   const handleLogout = () => {
@@ -54,6 +63,8 @@ const Navbar = () => {
     setIsLoggedIn(false)
     navigate('/')
     toast.success('Logged out successfully')
+    // Force a check of auth status
+    window.dispatchEvent(new Event('storage'))
   }
 
   const { cartItems } = useCart()  // Add this hook

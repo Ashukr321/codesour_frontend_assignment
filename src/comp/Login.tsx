@@ -43,9 +43,17 @@ const Login = () => {
         throw new Error('Invalid email or password')
       }
 
-      // If all validations pass, proceed with login
-      const token = Math.random().toString(36).substring(2) + Date.now().toString(36)
-      localStorage.setItem('token', token)
+      // Get the stored token from registration
+      const userToken = localStorage.getItem('userToken')
+      if (!userToken) {
+        throw new Error('Authentication error. Please register again')
+      }
+
+      // Set the token for authentication
+      localStorage.setItem('token', userToken)
+      
+      // Trigger storage event manually for navbar update
+      window.dispatchEvent(new Event('storage'))
       
       // Show success message and redirect
       toast.success('Login successful! Welcome back', {

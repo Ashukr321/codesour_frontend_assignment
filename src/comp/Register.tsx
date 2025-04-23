@@ -1,11 +1,21 @@
-
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ShoppingBasket, AlertCircle } from 'lucide-react'
+import { ShoppingBasket, AlertCircle, Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+
+// Function to generate a random token
+const generateToken = () => {
+  const tokenLength = 32
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let token = ''
+  for (let i = 0; i < tokenLength; i++) {
+    token += characters.charAt(Math.floor(Math.random() * characters.length))
+  }
+  return token
+}
 
 const Register = () => {
   const navigate = useNavigate()
@@ -15,6 +25,9 @@ const Register = () => {
     password: '',
     confirmPassword: ''
   })
+
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -47,19 +60,27 @@ const Register = () => {
         throw new Error('Passwords do not match')
       }
 
-      // If all validations pass, store user data
+      // Generate and store token
+      const token = generateToken()
+      localStorage.setItem('userToken', token)
+      localStorage.setItem('token', token)
+
+      // Store user data
       localStorage.setItem('userEmail', formData.email)
       localStorage.setItem('userPassword', formData.password)
       localStorage.setItem('userName', formData.name)
       
+      // Trigger storage event for navbar update
+      window.dispatchEvent(new Event('storage'))
+      
       // Show success message and redirect
-      toast.success('Registration successful! Please login', {
+      toast.success('Registration successful! Welcome to GreenBasket', {
         duration: 2000,
       })
       
       // Redirect after success message
       setTimeout(() => {
-        navigate('/login')
+        navigate('/')
       }, 1500)
 
     } catch (error) {
@@ -139,25 +160,47 @@ const Register = () => {
                 className="bg-gray-50 dark:bg-gray-900 h-11 md:h-12"
               />
             </div>
-            <div>
+            <div className="relative">
               <Input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 required
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="bg-gray-50 dark:bg-gray-900 h-11 md:h-12"
+                className="bg-gray-50 dark:bg-gray-900 h-11 md:h-12 pr-10"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
             </div>
-            <div>
+            <div className="relative">
               <Input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm Password"
                 required
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                className="bg-gray-50 dark:bg-gray-900 h-11 md:h-12"
+                className="bg-gray-50 dark:bg-gray-900 h-11 md:h-12 pr-10"
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
             </div>
           </div>
 
