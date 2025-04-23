@@ -177,6 +177,7 @@ const Navbar = () => {
           </SheetTrigger>
           <SheetContent side="top" className="w-full">
             <div className="flex flex-col items-center gap-6 mt-8">
+              {/* Navigation Items */}
               {navigation.map((item) => (
                 item.href.startsWith('#') ? (
                   <a
@@ -213,6 +214,8 @@ const Navbar = () => {
                   </Link>
                 )
               ))}
+
+              {/* Mobile Auth Buttons */}
               <div className="flex flex-col w-full gap-2 mt-4">
                 {isLoggedIn ? (
                   <motion.div
@@ -221,14 +224,15 @@ const Navbar = () => {
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
                     key="mobile-logout"
+                    className="w-full"
                   >
                     <Button 
                       variant="destructive" 
                       onClick={handleLogout}
-                      className="gap-2 w-full"
+                      className="w-full flex items-center justify-center gap-2 py-6"
                     >
-                      <LogOut className="h-4 w-4" />
-                      Logout
+                      <LogOut className="h-5 w-5" />
+                      <span className="text-base">Logout</span>
                     </Button>
                   </motion.div>
                 ) : (
@@ -237,19 +241,19 @@ const Navbar = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3 }}
-                    className="flex flex-col gap-2"
+                    className="flex flex-col gap-3 w-full"
                     key="mobile-login-register"
                   >
-                    <Button variant="outline" className="w-full" asChild>
+                    <Button variant="outline" className="w-full py-6" asChild>
                       <Link to="/login" className="flex items-center justify-center gap-2">
-                        <LogIn className="h-4 w-4" />
-                        Login
+                        <LogIn className="h-5 w-5" />
+                        <span className="text-base">Login</span>
                       </Link>
                     </Button>
-                    <Button variant="default" className="w-full bg-green-600 hover:bg-green-700" asChild>
+                    <Button variant="default" className="w-full bg-green-600 hover:bg-green-700 py-6" asChild>
                       <Link to="/register" className="flex items-center justify-center gap-2">
-                        <UserPlus className="h-4 w-4" />
-                        Register
+                        <UserPlus className="h-5 w-5" />
+                        <span className="text-base">Register</span>
                       </Link>
                     </Button>
                   </motion.div>
