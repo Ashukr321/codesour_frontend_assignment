@@ -10,10 +10,13 @@ import Cart from './pages/Cart'
 import { CartProvider } from '@/context/CartContext'
 import PaymentCheckout from './pages/PaymentCheckout'
 
+import Order from './pages/Order'
 import { Toaster } from 'sonner'
+import { OrderProvider } from './context/OrderContext'
 function App() {
   return (
     <CartProvider>
+      <OrderProvider>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <div className="min-h-screen flex flex-col">
           <Navbar />
@@ -22,6 +25,7 @@ function App() {
               <Route path="/" element={<MainPage />} />
               <Route path="/products" element={<Product />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/order" element={<Order />} />
               <Route path="/payment-checkout" element={<PaymentCheckout/>} />
 
             </Routes>
@@ -44,6 +48,7 @@ function App() {
           />
         </div>
       </ThemeProvider>
+      </OrderProvider>
     </CartProvider>
   )
 }

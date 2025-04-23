@@ -94,9 +94,7 @@ const Product = () => {
 
   return (
     loading ? (
-      <div  >
-
-
+      <div className='h-screen flex justify-center item-center'  >
         <Loader /> 
       </div>
     ): (
