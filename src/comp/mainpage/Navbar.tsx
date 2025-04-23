@@ -35,15 +35,6 @@ const Navbar = () => {
     }
   }
 
-  const handleLogin = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    navigate('/login')
-  }
-
-  const handleRegister = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    navigate('/register')
-  }
 
   // Update the useEffect to watch for token changes
   useEffect(() => {

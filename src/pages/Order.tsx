@@ -44,17 +44,8 @@ const Order = () => {
     }
   }, [])
 
-  // Dummy addresses near user location
-  const getDummyAddress = () => {
-    const addresses = [
-      "123 Green Street, Freshville, 12345",
-      "456 Veggie Lane, Organictown, 67890",
-      "789 Farm Road, Produceville, 34567",
-      "321 Garden Avenue, Healthyburg, 89012",
-      "654 Market Street, Freshtown, 56789"
-    ]
-    return addresses[Math.floor(Math.random() * addresses.length)]
-  }
+
+
 
   const container = {
     hidden: { opacity: 0 },
