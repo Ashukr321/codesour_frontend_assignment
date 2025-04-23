@@ -1,8 +1,4 @@
 import { useState, useEffect } from "react"
-import { 
-  Leaf, Truck, ShoppingBasket, 
-   Sprout
-} from "lucide-react"
 
 const Hero = () => {
   const images = [

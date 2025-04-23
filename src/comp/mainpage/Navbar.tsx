@@ -100,10 +100,10 @@ const Navbar = () => {
           ) : (
             <>
               <Button variant="outline" asChild>
-                <Link to="/login">Login</Link>
+                <a href="/login" onClick={handleLogin}>Login</a>
               </Button>
               <Button variant="default" asChild>
-                <Link to="/register">Register</Link>
+                <a href="/register" onClick={handleRegister}>Register</a>
               </Button>
             </>
           )}
@@ -151,10 +151,10 @@ const Navbar = () => {
                 ) : (
                   <>
                     <Button variant="outline" className="w-full" asChild>
-                      <Link to="/login">Login</Link>
+                      <a href="/login" onClick={handleLogin}>Login</a>
                     </Button>
                     <Button variant="default" className="w-full" asChild>
-                      <Link to="/register">Register</Link>
+                      <a href="/register" onClick={handleRegister}>Register</a>
                     </Button>
                   </>
                 )}
