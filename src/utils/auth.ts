@@ -15,10 +15,3 @@ export const handleLogout = () => {
 export const isAuthenticated = () => {
   return !!localStorage.getItem('token')
 }
-
-const onLogout = () => {
-  handleLogout()      // Utility function call
-  setIsLoggedIn(false)
-  navigate('/')
-  toast.success('Logged out successfully')
-}
